@@ -1,0 +1,6 @@
+googlemaps
+openai
+pandas
+cloudscraper
+numpy
+XlsxWriter

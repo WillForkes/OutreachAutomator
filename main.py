@@ -16,16 +16,15 @@ def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
 
-def start_bot(businessType, location, radius=1000, dev=False):
+def start_bot(businessType, location, radius=1000, dev=False, prospect=False, email=False):
     gmaps = GoogleMapsAPI()
     ai = OpenAI("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")
 
-    businessesFinal = []
     businesses = json.load(open("output/businesses.json", "r")) if dev else gmaps.search_businesses(businessType, f"{businessType} in {location}", radius)
     print(f"Found {len(businesses)} businesses")
 
+    # * Attempt to get more contact info (email/social media) if there is a website
     for business in businesses:
-        # Attempt to get more contact info (email/social media) if there is a website
         if business.get('website') != None:
             scraper = WebsiteScraper()
 
@@ -51,13 +50,18 @@ def start_bot(businessType, location, radius=1000, dev=False):
             if(len(scraper.social_media_urls) > 0):
                 business['social_media_urls'] = scraper.social_media_urls
     
-        businessesFinal.append(business)
+    # * Use Chat GPT to write prospecting emails
+    # ! NOT TESTED
+    if(prospect):
+        for business in businesses:
+            business['prospecting_email_template'] = ai.getCompletion("Website services", business['name'], business['type'], location, business['keywords'])
 
     # * Save to file
-    json.dump(businessesFinal, open("output/businesses.json", "w"), indent=4)
+    if(dev):
+        json.dump(businesses, open("output/businesses.json", "w"), indent=4)
 
     # * Convert to spreadsheet
-    dparser = DataParser(businessesFinal)
+    dparser = DataParser(businesses)
     dparser.cleanBusinessData()
     dparser.dumpJson()
 

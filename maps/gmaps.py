@@ -4,8 +4,8 @@ import json
 from urllib.parse import urlparse, urlunparse
 
 class GoogleMapsAPI:
-    def __init__(self):
-        self.api_key = 'AIzaSyDB4kFmbuVVlPG9XW3Jqhk01xx2nYiCdoA'
+    def __init__(self, api_key=None):
+        self.api_key = api_key
         self.base_url = 'https://maps.googleapis.com/maps/api/place/textsearch/json'
         self.client = googlemaps.Client(key=self.api_key)
 

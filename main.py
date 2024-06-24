@@ -17,8 +17,22 @@ def clear():
 
 
 def start_bot(businessType, location, radius=1000, dev=False, prospect=False, email=False):
-    gmaps = GoogleMapsAPI()
-    ai = OpenAI("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")
+    GMAPS_API_KEY = None
+    if 'GMAPS_API_KEY' in os.environ:
+        GMAPS_API_KEY = os.environ['GMAPS_API_KEY']
+    else:
+        print("No Google Maps API key found")
+        GMAPS_API_KEY = input("Enter Google Maps API key: ")
+
+    gmaps = GoogleMapsAPI(GMAPS_API_KEY)
+    
+    OPENAI_API_KEY = None
+    if 'OPENAI_API_KEY' in os.environ:
+        OPENAI_API_KEY = os.environ['OPENAI_API_KEY']
+        print("No OpenAI API key found")
+        OPENAI_API_KEY = input("Enter OpenAI API key: ")
+        
+    ai = OpenAI(OPENAI_API_KEY)
 
     businesses = json.load(open("output/businesses.json", "r")) if dev else gmaps.search_businesses(businessType, f"{businessType} in {location}", radius)
     print(f"Found {len(businesses)} businesses")

@@ -29,6 +29,7 @@ def start_bot(businessType, location, radius=1000, dev=False, prospect=False, em
     OPENAI_API_KEY = None
     if 'OPENAI_API_KEY' in os.environ:
         OPENAI_API_KEY = os.environ['OPENAI_API_KEY']
+    else:
         print("No OpenAI API key found")
         OPENAI_API_KEY = input("Enter OpenAI API key: ")
         

@@ -1,6 +1,4 @@
-***This project helps automate outreach to businesses via use of Google Maps and OpenAI***
-
-This project is unfinished and not maintained actively.
+***THIS PROJECT IS NOT COMPLETED OR 100% FUNCTIONAL CURRENTLY***
 
 # Outreach Automation Bot
 ## Overview
